@@ -1,6 +1,7 @@
 package ownmanager.in.fragmentruntimesample;
 
 /**Aim : To create a RunTimeFragment with buttons inside fragment activities
+ *          commit 2 : Adding navigation
  * Specify a container on the MainActivity layout file
  * */
 

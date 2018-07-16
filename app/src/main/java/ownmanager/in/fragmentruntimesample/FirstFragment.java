@@ -29,6 +29,7 @@ public class FirstFragment extends Fragment {
                 MainActivity.fragmentManager
                         .beginTransaction()
                         .replace(R.id.fragment_container,new SecondFragment(),null)
+                        .addToBackStack(null) // instead of destroy it will stop the fragment -> makes navigation between fragments possible
                         .commit();
             }
         });

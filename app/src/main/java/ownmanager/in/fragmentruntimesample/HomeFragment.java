@@ -34,6 +34,7 @@ public class HomeFragment extends Fragment {
                 MainActivity.fragmentManager
                         .beginTransaction()
                         .replace(R.id.fragment_container,new FirstFragment(),null)
+                        .addToBackStack(null) // instead of destroy it will stop the fragment -> makes navigation between fragments possible
                         .commit();
             }
         });
