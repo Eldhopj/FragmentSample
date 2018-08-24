@@ -1,12 +1,18 @@
 package ownmanager.in.fragmentruntimesample;
 
 /**Aim : To create a RunTimeFragment with buttons inside fragment activities
- *      commit 2 : Adding navigation
+ *      navigate through Fragments
+ *      Communications
+ *      Fragment using XML
+ *
+ * commit 2 : Adding navigation
  *          implement .addToBackStack() before commit
- *      commit 3 : Fragment communication
- *          Communication between fragment and activity interfaces
+ * commit 3 : Fragment to Activity communication
+ *          Communication between fragment and activity using interfaces
  *          code implemented in SecondFragment and MainActivity
- * Specify a container on the MainActivity layout file
+ * Commit 4:Adding a Fragment using XML
+ *          create a fragment with xml file as usual
+ *          on MainActivity XML file add fragment (Drag and drop is better) check activity_main.xml
  * */
 
 import android.os.Bundle;
