@@ -1,7 +1,6 @@
 package ownmanager.in.fragmentruntimesample;
 
 
-import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,9 +12,15 @@ import android.widget.EditText;
 
 
 public class SecondFragment extends Fragment {
-    OnMessageReadListner messageReadListner; // callback for the interface
+    private FragmentMessageListener messageListener; // callback for the interface
     private EditText editText;
     private Button sendBtn;
+
+    /** interface to communicate messages to activity*/
+    public interface FragmentMessageListener {
+        //NOTE : We can use String instead of CharSequence, but we don't need to convert CharSequence into string
+        void onMessageRead(CharSequence message);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -29,8 +34,8 @@ public class SecondFragment extends Fragment {
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String message = editText.getText().toString();
-                messageReadListner.onMessageRead(message);
+                CharSequence message = editText.getText(); //By using CharSequence we don't need to convert into string
+                messageListener.onMessageRead(message); //Sends this message using this interface method to our activity , and in activity we implement this method and fetch the message
             }
         });
 
@@ -42,23 +47,25 @@ public class SecondFragment extends Fragment {
     }
 
     /**
-     * check whether if the interface implemented in the parent activity
+     * Telling where to send this message
      */
     @Override
-    public void onAttach(Context context) {
+    public void onAttach(Context context) { // This method will call when the fragment is attached to the activity
         super.onAttach(context);
 
-        Activity activity = (Activity) context;
-        // check whether the interface is implemented in the activity or not
-        try {
-            messageReadListner = (OnMessageReadListner) activity;
-        } catch (ClassCastException e) {
-            throw new ClassCastException(activity.toString() + "Must override on message read");
+        if (context instanceof FragmentMessageListener) // checking whether our activity implements this interface
+        {
+            messageListener = (FragmentMessageListener) context;
+        }
+        else{
+            throw new RuntimeException(context.toString() + " Must implement FragmentMessageListener");
         }
     }
 
-    // interface to communicate messages
-    public interface OnMessageReadListner {
-        void onMessageRead(String message);
+    @Override
+    public void onDetach() { // this runs when we detach fragment from the activity
+        super.onDetach();
+        messageListener = null;
     }
+
 }

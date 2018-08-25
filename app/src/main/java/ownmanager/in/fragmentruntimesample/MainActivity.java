@@ -13,6 +13,9 @@ package ownmanager.in.fragmentruntimesample;
  * Commit 4:Adding a Fragment using XML
  *          create a fragment with xml file as usual
  *          on MainActivity XML file add fragment (Drag and drop is better) check activity_main.xml
+ * Commit 5: Communication between fragments and activity (Improved) and fragment to fragment
+ *          We cant communicate Fragment to Fragment directly because there is no connection,First we have to send it to the host activity then to fragment
+ *          Message send from SecondFragment receives in MainActivity and from there sends to XmlFragment
  * */
 
 import android.os.Bundle;
@@ -22,7 +25,9 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity implements SecondFragment.OnMessageReadListner { //implement the OnMessageReadListner
+public class MainActivity extends AppCompatActivity implements SecondFragment.FragmentMessageListener{ // Implement the interfaces
+
+    private XmlFragment xmlFragment;
 
     public static FragmentManager fragmentManager;
     FrameLayout fragmentConatiner;
@@ -32,6 +37,8 @@ public class MainActivity extends AppCompatActivity implements SecondFragment.On
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        xmlFragment = new XmlFragment(); // Instance of second fragment
 
         fragmentConatiner = findViewById(R.id.fragment_container);
         messageDisplayTV = findViewById(R.id.displayTV);
@@ -50,8 +57,14 @@ public class MainActivity extends AppCompatActivity implements SecondFragment.On
         }
     }
 
+    /**Receiving message from fragment*/
     @Override
-    public void onMessageRead(String message) {
-        messageDisplayTV.setText(message);
+    public void onMessageRead(CharSequence message) {
+        messageDisplayTV.setText(message);// Setting up message into the MainActivity
+
+        /*NOTE : We cant communicate Fragment to Fragment directly because there is no connection,
+        * First we have to send it to the host activity then to fragment*/
+        //NOTE : If you want to send message when the fragment is created "https://www.youtube.com/watch?v=HZYYjY2NSKk&list=PLrnPJCHvNZuBkhcesO6DfdCghl6ZejVPc"
+        xmlFragment.messageFromActivity(message); /** Sending message to XML fragment*/
     }
 }
