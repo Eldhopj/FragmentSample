@@ -1,4 +1,4 @@
-package ownmanager.in.fragmentruntimesample;
+package ownmanager.in.fragmentruntimesample.fragments;
 
 
 import android.content.Context;
@@ -9,17 +9,20 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+
+import ownmanager.in.fragmentruntimesample.FragmentMessageListener;
+import ownmanager.in.fragmentruntimesample.R;
 
 
-public class SecondFragment extends Fragment {
+public class FragmentToActivityCommunication extends Fragment {
     private FragmentMessageListener messageListener; // callback for the interface
     private EditText editText;
-    private Button sendBtn;
+    private Button sendBtn, openFragmentInsideFragment;
+    private FrameLayout fragmentContainer;
 
-    /** interface to communicate messages to activity*/
-    public interface FragmentMessageListener {
-        //NOTE : We can use String instead of CharSequence, but we don't need to convert CharSequence into string
-        void onMessageRead(CharSequence message);
+    public FragmentToActivityCommunication() {
+        // Required empty public constructor
     }
 
     @Override
@@ -30,6 +33,8 @@ public class SecondFragment extends Fragment {
 
         editText = view.findViewById(R.id.editText);
         sendBtn = view.findViewById(R.id.sendBtn);
+        fragmentContainer = view.findViewById(R.id.fragment_fragment_container);
+        openFragmentInsideFragment = view.findViewById(R.id.openFragmentInsideFragment);
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -39,15 +44,25 @@ public class SecondFragment extends Fragment {
             }
         });
 
+        openFragmentInsideFragment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /**getChildFragmentManager : for placing and managing Fragments inside Fragment.*/
+                getChildFragmentManager()
+                        .beginTransaction()
+                        .replace(R.id.fragment_fragment_container,new SingleFragmentMultipleInstance(),null)
+                        .addToBackStack(null) // instead of destroy it will stop the fragment -> makes navigation between fragments possible
+                        .commit();
+            }
+        });
+
+
         return view;
     }
 
-    public SecondFragment() {
-        // Required empty public constructor
-    }
-
     /**
-     * Telling where to send this message
+     * Checking whether interface is implemented
+     * onAttach -> this is where the fragment attach to its host activity
      */
     @Override
     public void onAttach(Context context) { // This method will call when the fragment is attached to the activity

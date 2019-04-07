@@ -1,6 +1,4 @@
-package ownmanager.in.fragmentruntimesample;
-
-
+package ownmanager.in.fragmentruntimesample.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -9,38 +7,35 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import ownmanager.in.fragmentruntimesample.R;
 
-public class HomeFragment extends Fragment {
 
-    private Button firstFragment;
-
-    public HomeFragment() {
+public class FirstFragment extends Fragment {
+    private Button secondFragment;
+    public FirstFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false); // create a view class object
+        View view = inflater.inflate(R.layout.fragment_first, container, false);
 
-        firstFragment = view.findViewById(R.id.firstFragmentBtn);
+        secondFragment = view.findViewById(R.id.secondFragmentBtn);
 
-        // Moving from Home Fragment to First Fragment
-        firstFragment.setOnClickListener(new View.OnClickListener() {
+        // Moving from First Fragment to Second Fragment
+        secondFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                MainActivity.fragmentManager
+                getActivity().getSupportFragmentManager() // replaces second fragment with main activity container
                         .beginTransaction()
-                        .replace(R.id.fragment_container,new FirstFragment(),null)
+                        .replace(R.id.fragment_container,new FragmentToActivityCommunication(),null)
                         .addToBackStack(null) // instead of destroy it will stop the fragment -> makes navigation between fragments possible
                         .commit();
             }
         });
-
         return view;
     }
-
 
 }
