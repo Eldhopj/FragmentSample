@@ -19,6 +19,16 @@
 
     </FrameLayout>
 
+    <Button
+        android:id="@+id/communicationToast"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginBottom="8dp"
+        android:onClick="communicationToFragment"
+        android:text="Toast"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/displayTV" />
     <TextView
         android:id="@+id/displayTV"
         android:layout_width="0dp"
@@ -41,4 +51,6 @@
         app:layout_constraintBottom_toTopOf="@+id/displayTV"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
+
+
 </android.support.constraint.ConstraintLayout>

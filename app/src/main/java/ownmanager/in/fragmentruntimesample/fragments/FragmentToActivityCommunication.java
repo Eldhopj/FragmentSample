@@ -9,17 +9,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.FrameLayout;
+import android.widget.Toast;
 
 import ownmanager.in.fragmentruntimesample.FragmentMessageListener;
 import ownmanager.in.fragmentruntimesample.R;
 
 
-public class FragmentToActivityCommunication extends Fragment {
+    public class FragmentToActivityCommunication extends Fragment {
     private FragmentMessageListener messageListener; // callback for the interface
     private EditText editText;
     private Button sendBtn, openFragmentInsideFragment;
-    private FrameLayout fragmentContainer;
+    private String toastMessage;
 
     public FragmentToActivityCommunication() {
         // Required empty public constructor
@@ -33,8 +33,13 @@ public class FragmentToActivityCommunication extends Fragment {
 
         editText = view.findViewById(R.id.editText);
         sendBtn = view.findViewById(R.id.sendBtn);
-        fragmentContainer = view.findViewById(R.id.fragment_fragment_container);
         openFragmentInsideFragment = view.findViewById(R.id.openFragmentInsideFragment);
+
+        getExtras();
+
+        if (toastMessage != null) {
+            toastFromMainActivity(toastMessage);
+        }
 
         sendBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,12 +52,8 @@ public class FragmentToActivityCommunication extends Fragment {
         openFragmentInsideFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /**getChildFragmentManager : for placing and managing Fragments inside Fragment.*/
-                getChildFragmentManager()
-                        .beginTransaction()
-                        .replace(R.id.fragment_fragment_container,new SingleFragmentMultipleInstance(),null)
-                        .addToBackStack(null) // instead of destroy it will stop the fragment -> makes navigation between fragments possible
-                        .commit();
+                Fragment fragment = new SingleFragmentMultipleInstance();
+                fragmentTransaction(fragment);
             }
         });
 
@@ -81,6 +82,26 @@ public class FragmentToActivityCommunication extends Fragment {
     public void onDetach() { // this runs when we detach fragment from the activity
         super.onDetach();
         messageListener = null;
+    }
+
+    public void toastFromMainActivity(String message){
+        Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+    }
+
+    private void getExtras () {
+        Bundle args = getArguments();
+        if (args != null) {
+            toastMessage = args.getString("toastMessage", null);
+        }
+    }
+
+    private void fragmentTransaction(Fragment fragment) {
+        /**getChildFragmentManager : for placing and managing Fragments inside Fragment.*/
+        getChildFragmentManager()
+                .beginTransaction()
+                .replace(R.id.fragment_fragment_container,fragment,null)
+                .addToBackStack(null) // instead of destroy it will stop the fragment -> makes navigation between fragments possible
+                .commit();
     }
 
 }

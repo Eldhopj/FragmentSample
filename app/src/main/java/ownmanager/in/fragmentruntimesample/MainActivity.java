@@ -17,14 +17,21 @@ package ownmanager.in.fragmentruntimesample;
  *          We cant communicate Fragment to Fragment directly because there is no connection,First we have to send it to the host activity then to fragment
  *          Message send from FragmentToActivityCommunication receives in MainActivity and from there sends to XmlFragment
  *Commit 6: getChildFragmentManager : for placing and managing Fragments inside Fragment (check : FragmentToActivityCommunication)
+ *Commit 7: Communication from activity to fragment (Check : FragmentToActivityCommunication  and MainActivity)
+ *              1. Already opened
+ *              2. Not opened
  * */
 
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import java.util.List;
+
+import ownmanager.in.fragmentruntimesample.fragments.FragmentToActivityCommunication;
 import ownmanager.in.fragmentruntimesample.fragments.HomeFragment;
 import ownmanager.in.fragmentruntimesample.fragments.XmlFragment;
 
@@ -33,7 +40,6 @@ public class MainActivity extends AppCompatActivity implements FragmentMessageLi
     private XmlFragment xmlFragment;
     private FrameLayout fragmentContainer;
     private TextView messageDisplayTV;
-    private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,18 +51,29 @@ public class MainActivity extends AppCompatActivity implements FragmentMessageLi
         fragmentContainer = findViewById(R.id.fragment_container);
         messageDisplayTV = findViewById(R.id.displayTV);
 
-        /**fragmentManager -> responsible for starting and completing the fragment transactions */
-        fragmentManager = getSupportFragmentManager();
-
         /**if you want to add a fragment into the container onCreate*/
         if(fragmentContainer != null){ // check whether there is container or not
             if(savedInstanceState != null){ // prevents recreating of fragments on state changes.
                 return;
             }
-             fragmentManager.beginTransaction()// to begin the fragment transaction
-                     .add(R.id.fragment_container,new HomeFragment(),null)// adds the fragment into the container
-                    // .replace(R.id.fragment_container,new HomeFragment(),null)// replace the fragment into the container
-                     .commit();
+             fragmentTransaction(new HomeFragment(),null);
+        }
+    }
+
+    /**Communication
+     * 1.if fragment is open, the the instance and pass the value
+     * 2.If fragment is not open, we cannot communicate so we have to navigate into the fragment first, and pass the values through setArguments
+     * */
+    public void communicationToFragment(View view) {
+        if (getCommunicationFragment() != null) { // checking whether the instance is available
+            getCommunicationFragment().toastFromMainActivity("hello communication successful");
+        } else {
+            FragmentToActivityCommunication communicationFragment = new FragmentToActivityCommunication();
+            Bundle args = new Bundle();
+            args.putString("toastMessage","hello communication successful");
+            communicationFragment.setArguments(args);
+
+            fragmentTransaction(communicationFragment,null);
         }
     }
 
@@ -75,4 +92,32 @@ public class MainActivity extends AppCompatActivity implements FragmentMessageLi
      * <a href https://stackoverflow.com/a/14292451/9585974 />
      */
 
+
+/** Works only when the fragment is open */
+    public FragmentToActivityCommunication getCommunicationFragment() {
+        FragmentToActivityCommunication communicationFragment = null;
+        if (getSupportFragmentManager() != null) {
+            List<Fragment> fragments = getSupportFragmentManager().getFragments();
+            if (fragments != null) {
+                for (Fragment fragment : fragments) {
+                    if (fragment instanceof FragmentToActivityCommunication) {
+                        communicationFragment = (FragmentToActivityCommunication) fragment;
+                        break;
+                    }
+                }
+            }
+        }
+        return communicationFragment;
+    }
+
+
+    /**Fragment transition*/
+    private void fragmentTransaction(Fragment fragment, String tag){
+        /**fragmentManager -> responsible for starting and completing the fragment transactions */
+        getSupportFragmentManager() //to get FragmentManager object
+                .beginTransaction() //to get FragmentTransaction object
+                .replace(R.id.fragment_container, fragment,tag) // Replace whatever is in the fragment_container view with this fragment
+                .addToBackStack(null) // and add the transaction to the back stack so the user can navigate back (Optional)
+                .commit();
+    }
 }
