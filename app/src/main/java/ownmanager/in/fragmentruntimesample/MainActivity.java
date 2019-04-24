@@ -24,6 +24,8 @@ package ownmanager.in.fragmentruntimesample;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements FragmentMessageLi
             if(savedInstanceState != null){ // prevents recreating of fragments on state changes.
                 return;
             }
-             fragmentTransaction(new HomeFragment(),null);
+            fragmentTransaction(new HomeFragment(), "home_fragment");
         }
     }
 
@@ -64,7 +66,7 @@ public class MainActivity extends AppCompatActivity implements FragmentMessageLi
      * 1.if fragment is open, the the instance and pass the value
      * 2.If fragment is not open, we cannot communicate so we have to navigate into the fragment first, and pass the values through setArguments
      * */
-    public void communicationToFragment(View view) {
+    public void communicatingToFragment(View view) {
         if (getCommunicationFragment() != null) { // checking whether the instance is available
             getCommunicationFragment().toastFromMainActivity("hello communication successful");
         } else {
@@ -73,7 +75,7 @@ public class MainActivity extends AppCompatActivity implements FragmentMessageLi
             args.putString("toastMessage","hello communication successful");
             communicationFragment.setArguments(args);
 
-            fragmentTransaction(communicationFragment,null);
+            fragmentTransaction(communicationFragment, "communication_fragment");
         }
     }
 
@@ -112,12 +114,18 @@ public class MainActivity extends AppCompatActivity implements FragmentMessageLi
 
 
     /**Fragment transition*/
-    private void fragmentTransaction(Fragment fragment, String tag){
+    private void fragmentTransaction(Fragment fragmentToSet, String tag) {
         /**fragmentManager -> responsible for starting and completing the fragment transactions */
-        getSupportFragmentManager() //to get FragmentManager object
-                .beginTransaction() //to get FragmentTransaction object
-                .replace(R.id.fragment_container, fragment,tag) // Replace whatever is in the fragment_container view with this fragment
-                .addToBackStack(null) // and add the transaction to the back stack so the user can navigate back (Optional)
-                .commit();
+        FragmentManager manager = getSupportFragmentManager(); //to get FragmentManager object
+        FragmentTransaction transaction = manager.beginTransaction(); //to get FragmentTransaction object
+        Fragment fragment = manager.findFragmentByTag(tag);
+        if (fragment != null) {
+            transaction.replace(R.id.fragment_container, fragment, tag); // If fragment is already present replace whatever is in the fragment_container view with this fragment
+        } else if (fragmentToSet != null) {
+            transaction.replace(R.id.fragment_container, fragmentToSet, tag); // Replace whatever is in the fragment_container view with this fragment
+        }
+        transaction.addToBackStack(null); // and add the transaction to the back stack so the user can navigate back (Optional)
+        transaction.commit();
+        manager.executePendingTransactions();
     }
 }
