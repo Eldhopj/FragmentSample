@@ -16,12 +16,12 @@ import ownmanager.in.fragmentruntimesample.R;
  * create an instance of this fragment.
  */
 public class SingleFragmentMultipleInstance extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
+    // Keys for Bundle
+    private static final String KEY_1 = "param1";
+    private static final String KEY_2 = "param2";
+
+
     private String mParam1;
     private String mParam2;
 
@@ -30,20 +30,12 @@ public class SingleFragmentMultipleInstance extends Fragment {
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment SingleFragmentMultipleInstance.
-     */
-    // TODO: Rename and change types and number of parameters
+    //Creates new instance
     public static SingleFragmentMultipleInstance newInstance(String param1, String param2) {
         SingleFragmentMultipleInstance fragment = new SingleFragmentMultipleInstance();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(KEY_1, param1);
+        args.putString(KEY_2, param2);
         fragment.setArguments(args);
         return fragment;
     }
@@ -52,8 +44,8 @@ public class SingleFragmentMultipleInstance extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            mParam1 = getArguments().getString(KEY_1);
+            mParam2 = getArguments().getString(KEY_2);
         }
     }
 

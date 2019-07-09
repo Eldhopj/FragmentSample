@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity implements FragmentMessageLi
     private XmlFragment xmlFragment;
     private FrameLayout fragmentContainer;
     private TextView messageDisplayTV;
+    private FragmentToActivityCommunication fragmentToActivityCommunication;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,5 +128,21 @@ public class MainActivity extends AppCompatActivity implements FragmentMessageLi
         transaction.addToBackStack(null); // and add the transaction to the back stack so the user can navigate back (Optional)
         transaction.commit();
         manager.executePendingTransactions();
+    }
+
+    /**
+     * For refreshing fragment
+     */
+    private void refreshCommunicationFragment() {
+        Fragment frg = getCommunicationFragment();
+        final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        if (frg != null) {
+            if (frg.isAdded()) {
+                ft.detach(frg);
+                ft.attach(frg);
+                ft.commitAllowingStateLoss();
+            }
+        }
+        fragmentToActivityCommunication = getCommunicationFragment();
     }
 }
