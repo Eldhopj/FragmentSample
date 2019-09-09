@@ -16,20 +16,21 @@ package ownmanager.in.fragmentruntimesample;
  * Commit 5: Communication between fragments and activity (Improved) and fragment to fragment
  *          We cant communicate Fragment to Fragment directly because there is no connection,First we have to send it to the host activity then to fragment
  *          Message send from FragmentToActivityCommunication receives in MainActivity and from there sends to XmlFragment
- *Commit 6: getChildFragmentManager : for placing and managing Fragments inside Fragment (check : FragmentToActivityCommunication)
+ *Commit 6: Important : getChildFragmentManager : for placing and managing Fragments inside Fragment (check : FragmentToActivityCommunication)
  *Commit 7: Communication from activity to fragment (Check : FragmentToActivityCommunication  and MainActivity)
  *              1. Already opened
  *              2. Not opened
  * */
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import java.util.List;
 

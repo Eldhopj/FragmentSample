@@ -2,10 +2,11 @@ package ownmanager.in.fragmentruntimesample.fragments;
 
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
 
 import ownmanager.in.fragmentruntimesample.R;
 
@@ -29,6 +30,8 @@ public class SingleFragmentMultipleInstance extends Fragment {
     public SingleFragmentMultipleInstance() {
         // Required empty public constructor
     }
+
+    // Call this to get the new instances - >  SingleFragmentMultipleInstance.newInstance("1","2");
 
     //Creates new instance
     public static SingleFragmentMultipleInstance newInstance(String param1, String param2) {
