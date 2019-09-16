@@ -10,17 +10,21 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.ViewModelProviders;
 
 import ownmanager.in.fragmentruntimesample.FragmentMessageListener;
 import ownmanager.in.fragmentruntimesample.R;
+import ownmanager.in.fragmentruntimesample.viewModel.SharedViewModel;
 
 
-    public class FragmentToActivityCommunication extends Fragment {
+public class FragmentToActivityCommunication extends Fragment {
     private FragmentMessageListener messageListener; // callback for the interface
     private EditText editText;
     private Button sendBtn, openFragmentInsideFragment;
     private String toastMessage;
+    private SharedViewModel viewModel;
 
     public FragmentToActivityCommunication() {
         // Required empty public constructor
@@ -47,6 +51,8 @@ import ownmanager.in.fragmentruntimesample.R;
             public void onClick(View v) {
                 CharSequence message = editText.getText(); //By using CharSequence we don't need to convert into string
                 messageListener.onMessageRead(message); //Sends this message using this interface method to our activity , and in activity we implement this method and fetch the message
+
+                viewModel.setText(editText.getText()); /**Sending message using view model*/
             }
         });
 
@@ -77,6 +83,12 @@ import ownmanager.in.fragmentruntimesample.R;
         else{
             throw new RuntimeException(context.toString() + " Must implement FragmentMessageListener");
         }
+    }
+
+    @Override
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        viewModel = ViewModelProviders.of(getActivity()).get(SharedViewModel.class);
     }
 
     @Override

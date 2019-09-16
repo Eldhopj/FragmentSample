@@ -20,6 +20,9 @@ package ownmanager.in.fragmentruntimesample;
  *Commit 7: Communication from activity to fragment (Check : FragmentToActivityCommunication  and MainActivity)
  *              1. Already opened
  *              2. Not opened
+ *
+ *Commit 8: Sharing data between fragments using sharedViewModel
+ *         Implemented between FragmentToActivityCommunication ->  XmlFragment
  * */
 
 import android.os.Bundle;
