@@ -103,15 +103,12 @@ public class MainActivity extends AppCompatActivity implements FragmentMessageLi
 /** Works only when the fragment is open */
     public FragmentToActivityCommunication getCommunicationFragment() {
         FragmentToActivityCommunication communicationFragment = null;
-        if (getSupportFragmentManager() != null) {
-            List<Fragment> fragments = getSupportFragmentManager().getFragments();
-            if (fragments != null) {
-                for (Fragment fragment : fragments) {
-                    if (fragment instanceof FragmentToActivityCommunication) {
-                        communicationFragment = (FragmentToActivityCommunication) fragment;
-                        break;
-                    }
-                }
+        getSupportFragmentManager();
+        List<Fragment> fragments = getSupportFragmentManager().getFragments();
+        for (Fragment fragment : fragments) {
+            if (fragment instanceof FragmentToActivityCommunication) {
+                communicationFragment = (FragmentToActivityCommunication) fragment;
+                break;
             }
         }
         return communicationFragment;
@@ -131,7 +128,10 @@ public class MainActivity extends AppCompatActivity implements FragmentMessageLi
         }
         transaction.addToBackStack(null); // and add the transaction to the back stack so the user can navigate back (Optional)
         transaction.commit();
-        manager.executePendingTransactions();
+        if (!isFinishing()) {
+            transaction.commitAllowingStateLoss();
+            manager.executePendingTransactions();
+        }
     }
 
     /**
