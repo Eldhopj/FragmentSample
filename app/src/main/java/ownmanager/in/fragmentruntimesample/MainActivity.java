@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity implements FragmentMessageLi
         Fragment fragment = manager.findFragmentByTag(fragmentToSet.getClass().getName());
         if (fragment != null) {
             transaction.replace(R.id.fragment_container, fragment, fragment.getClass().getName()); // If fragment is already present replace whatever is in the fragment_container view with this fragment
-        } else if (fragmentToSet != null) {
+        } else {
             transaction.replace(R.id.fragment_container, fragmentToSet, fragmentToSet.getClass().getName()); // Replace whatever is in the fragment_container view with this fragment
         }
         transaction.addToBackStack(null); // and add the transaction to the back stack so the user can navigate back (Optional)
