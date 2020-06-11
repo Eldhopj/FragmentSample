@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity implements FragmentMessageLi
             if(savedInstanceState != null){ // prevents recreating of fragments on state changes.
                 return;
             }
-            fragmentTransaction(new HomeFragment(), "home_fragment");
+            fragmentTransaction(new HomeFragment());
         }
     }
 
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements FragmentMessageLi
             args.putString("toastMessage","hello communication successful");
             communicationFragment.setArguments(args);
 
-            fragmentTransaction(communicationFragment, "communication_fragment");
+            fragmentTransaction(communicationFragment);
         }
     }
 
@@ -119,15 +119,15 @@ public class MainActivity extends AppCompatActivity implements FragmentMessageLi
 
 
     /**Fragment transition*/
-    private void fragmentTransaction(Fragment fragmentToSet, String tag) {
+    private void fragmentTransaction(Fragment fragmentToSet) {
         /**fragmentManager -> responsible for starting and completing the fragment transactions */
         FragmentManager manager = getSupportFragmentManager(); //to get FragmentManager object
         FragmentTransaction transaction = manager.beginTransaction(); //to get FragmentTransaction object
-        Fragment fragment = manager.findFragmentByTag(tag);
+        Fragment fragment = manager.findFragmentByTag(fragmentToSet.getClass().getName());
         if (fragment != null) {
-            transaction.replace(R.id.fragment_container, fragment, tag); // If fragment is already present replace whatever is in the fragment_container view with this fragment
+            transaction.replace(R.id.fragment_container, fragment, fragment.getClass().getName()); // If fragment is already present replace whatever is in the fragment_container view with this fragment
         } else if (fragmentToSet != null) {
-            transaction.replace(R.id.fragment_container, fragmentToSet, tag); // Replace whatever is in the fragment_container view with this fragment
+            transaction.replace(R.id.fragment_container, fragmentToSet, fragmentToSet.getClass().getName()); // Replace whatever is in the fragment_container view with this fragment
         }
         transaction.addToBackStack(null); // and add the transaction to the back stack so the user can navigate back (Optional)
         transaction.commit();
