@@ -108,21 +108,23 @@ class MainActivity : AppCompatActivity(), FragmentMessageListener { // Implement
             supportFragmentManager.beginTransaction() //to get FragmentTransaction object
         val fragment =
             supportFragmentManager.findFragmentByTag(fragmentToSet.javaClass.name)
-        if (fragment != null) {
-            transaction.replace(
-                R.id.fragmentContainer,
-                fragment,
-                fragment.javaClass.name
-            ) // If fragment is already present replace whatever is in the fragment_container view with this fragment
-        } else {
-            transaction.replace(
-                R.id.fragmentContainer,
-                fragmentToSet,
-                fragmentToSet.javaClass.name
-            ) // Replace whatever is in the fragment_container view with this fragment
+        with(transaction) {
+            if (fragment != null) {
+                replace(
+                    R.id.fragmentContainer,
+                    fragment,
+                    fragment.javaClass.name
+                ) // If fragment is already present replace whatever is in the fragment_container view with this fragment
+            } else {
+                replace(
+                    R.id.fragmentContainer,
+                    fragmentToSet,
+                    fragmentToSet.javaClass.name
+                ) // Replace whatever is in the fragment_container view with this fragment
+            }
+            addToBackStack(null) // and add the transaction to the back stack so the user can navigate back (Optional)
+            commit()
         }
-        transaction.addToBackStack(null) // and add the transaction to the back stack so the user can navigate back (Optional)
-        transaction.commit()
     }
 
     /**
