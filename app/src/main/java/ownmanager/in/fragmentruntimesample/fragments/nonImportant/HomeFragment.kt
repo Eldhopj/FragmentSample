@@ -1,4 +1,4 @@
-package ownmanager.`in`.fragmentruntimesample.fragments
+package ownmanager.`in`.fragmentruntimesample.fragments.nonImportant
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,7 +23,10 @@ class HomeFragment : Fragment() {
             if (activity == null) return@OnClickListener
             activity!!.supportFragmentManager //Getting getSupportFragmentManager from Activity since its replacing the container inside the MainActivity XML
                 .beginTransaction()
-                .replace(R.id.fragmentContainer, FirstFragment(), null)
+                .replace(
+                    R.id.fragmentContainer,
+                    FirstFragment(), null
+                )
                 .addToBackStack(null) // instead of destroy it will stop the fragment -> makes navigation between fragments possible
                 .commit()
         })

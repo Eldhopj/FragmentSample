@@ -6,8 +6,8 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import kotlinx.android.synthetic.main.activity_main.*
 import ownmanager.`in`.fragmentruntimesample.fragments.FragmentToActivityCommunication
-import ownmanager.`in`.fragmentruntimesample.fragments.HomeFragment
 import ownmanager.`in`.fragmentruntimesample.fragments.XmlFragment
+import ownmanager.`in`.fragmentruntimesample.fragments.nonImportant.HomeFragment
 
 /**Aim : To create a RunTimeFragment with buttons inside fragment activities
  * commit 3 : Fragment to Activity communication
