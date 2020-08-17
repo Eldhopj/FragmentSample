@@ -128,10 +128,10 @@ public class MainActivity extends AppCompatActivity implements FragmentMessageLi
         }
         transaction.addToBackStack(null); // and add the transaction to the back stack so the user can navigate back (Optional)
         transaction.commit();
-        if (!isFinishing()) {
-            transaction.commitAllowingStateLoss();
-            manager.executePendingTransactions();
-        }
+//        if (!isFinishing()) {
+//            transaction.commitAllowingStateLoss();
+//            manager.executePendingTransactions();
+//        }
     }
 
     /**
